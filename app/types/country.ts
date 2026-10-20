@@ -1,4 +1,3 @@
-
 export interface Country {
   uuid: string;
   names: {

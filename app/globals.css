@@ -359,7 +359,31 @@
   font-size: 17px;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 32px 0;
+}
 
+.pagination button {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background: #f0f0f0;
+}
+
+.pagination button.activePage {
+  background: #222;
+  color: white;
+  border-color: #222;
+}
 
 
 

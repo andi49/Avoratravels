@@ -1,19 +1,29 @@
+import { Suspense } from "react";
 import Search from "./components/Search";
 import CountriesPage from "./layout/contries/page";
 import RegionsPage from "./layout/regions/page";
 
 type HomeProps = {
   searchParams: Promise<{
-    region: string;
+    region?: string;
   }>;
 };
-export default async function Home({ searchParams }: HomeProps) {
+
+async function CountryContent({ searchParams }: HomeProps) {
   const { region } = await searchParams;
+
+  return <CountriesPage region={region} />;
+}
+
+export default function Home({ searchParams }: HomeProps) {
   return (
-   <>
-    <Search />
-    <RegionsPage/>
-   <CountriesPage  region={region} />
-   </>
+    <>
+      <Search />
+      <RegionsPage />
+
+      <Suspense fallback={<p>Loading countries...</p>}>
+        <CountryContent searchParams={searchParams} />
+      </Suspense>
+    </>
   );
 }

@@ -12,9 +12,10 @@ async function RegionList() {
 
   return (
    <div className="regionGrid">
+    <Link href="/" className="regionCard"scroll={false}>Alla regioner</Link>
   {regions.map((region) => (
-    <Link key={region} className="regionCard" href={`/?region=${encodeURIComponent(region)}`}> 
-      {region}
+   <Link key={region} className="regionCard" href={`/?region=${encodeURIComponent(region)}`} scroll={false}>
+    {region}
     </Link>
   ))}
 </div>
