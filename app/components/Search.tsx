@@ -1,5 +1,15 @@
+'use client'
 
-export default function Search() {
+type searchProps = {
+  searchTerm: string
+  onSearchChange: (value: string) => void
+}
+
+export default function Search({
+  searchTerm,
+  onSearchChange,
+}: searchProps) {
+
   return (
     <section className="search-section">
       <div className="search-content">
@@ -21,12 +31,15 @@ export default function Search() {
             className="search-input"
             placeholder="Sök land eller destination..."
             aria-label="Sök land eller destination"
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
           />
 
           <span className="search-decoration" aria-hidden="true">
             →
           </span>
         </div>
+        <p>Du söker efter: {searchTerm}</p> 
       </div>
     </section>
   );

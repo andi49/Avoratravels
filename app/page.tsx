@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Search from "./components/Search";
+
 import CountriesPage from "./layout/contries/page";
 import RegionsPage from "./layout/regions/page";
 
@@ -12,18 +12,17 @@ type HomeProps = {
 async function CountryContent({ searchParams }: HomeProps) {
   const { region } = await searchParams;
 
-  return <CountriesPage region={region} />;
+  return (
+  <CountriesPage region={region}>
+    <RegionsPage />
+  </CountriesPage>
+);
 }
 
 export default function Home({ searchParams }: HomeProps) {
   return (
-    <>
-      <Search />
-      <RegionsPage />
-
-      <Suspense fallback={<p>Loading countries...</p>}>
-        <CountryContent searchParams={searchParams} />
-      </Suspense>
-    </>
+    <Suspense fallback={<p>Loading countries...</p>}>
+      <CountryContent searchParams={searchParams} />
+    </Suspense>
   );
 }
