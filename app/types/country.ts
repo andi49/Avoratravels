@@ -18,6 +18,11 @@ names: {
     ccn3: string;
   };
 
+  coordinates: {
+  lat: number;
+  lng: number;
+};
+
   capitals: {
     name: string;
     coordinates?: {
