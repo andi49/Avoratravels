@@ -1,3 +1,4 @@
+import { Country } from "../types/country";
 
 export async function getGeography() {
   const apiKey = process.env.REST_COUNTRIES_API_KEY;
@@ -7,7 +8,7 @@ export async function getGeography() {
   }
 
   try {
-    const countries = [];
+    const countries: Country[] = [];
 
     for (let offset = 0; ; offset += 100) {
       console.log("Hämtar länder, offset:", offset);

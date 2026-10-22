@@ -2,7 +2,7 @@
 'use client'
 import { useState } from "react"
 import { Country } from "../types/country"
-
+import Link from "next/link"
 type CountryCardsProps = {
     contries: Country[]
 }
@@ -22,13 +22,11 @@ export default function CountryCards({contries}: CountryCardsProps) {
     <>
       <div className="countryGrid">
         {visibleCountries.map((country) => (
-          <div key={country.uuid} className="countryCard">
+          <Link href={`/destinations/${country.uuid}`} key={country.uuid} className="countryCard">
+
             <div className="countryFlag">
               {country.flag.url_png && (
-                <img
-                  src={country.flag.url_png}
-                  alt={`Flagga av ${country.names.common}`}
-                />
+                <img src={country.flag.url_png} alt={`Flagga av ${country.names.common}`}/>
               )}
             </div>
 
@@ -50,7 +48,7 @@ export default function CountryCards({contries}: CountryCardsProps) {
                 </strong>
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
