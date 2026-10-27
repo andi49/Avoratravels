@@ -3,6 +3,7 @@ import { Country } from "../types/country"
 import { useState, type ReactNode } from "react";
 import Search from "./Search"
 import CountryCards from "./CountryCards"
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 type CountryBrowserProps = {
     countries: Country[]
@@ -15,7 +16,34 @@ export default function CrountryBrowser({
     region,
     children
 }:CountryBrowserProps) {
-    const [search, setSearch] = useState('')
+
+    
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const searchFromUrl = searchParams.get('search') ?? ''
+    const [search, setSearch] = useState(searchFromUrl)
+
+    function handleSearchChange(value:string) {
+        setSearch(value)
+
+        const params = new URLSearchParams(searchParams.toString())
+
+        if(value.trim()) {
+            params.set('search', value)
+           
+        } else {
+            params.delete('search')
+        }
+        params.delete('page')
+
+        const query = params.toString()
+
+         router.replace(query ? `${pathname}?${query}` : pathname, {
+    scroll: false,
+  });
+    }
 
     const filteredCountries = countries.filter((country) => 
     country.names.common.toLocaleLowerCase().includes(search.toLocaleLowerCase().trim())
@@ -23,7 +51,9 @@ export default function CrountryBrowser({
 
     return (
         <>
-       <Search searchTerm={search} onSearchChange={setSearch}/>
+       <Search 
+       searchTerm={search} 
+       onSearchChange={handleSearchChange}/>
           {children}
       
        <main>

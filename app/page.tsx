@@ -1,7 +1,8 @@
 import { Suspense } from "react";
-
 import CountriesPage from "./layout/contries/page";
 import RegionsPage from "./layout/regions/page";
+import Loading from "./destinations/[countryId]/loading";
+import "./globals.css";
 
 type HomeProps = {
   searchParams: Promise<{
@@ -16,12 +17,13 @@ async function CountryContent({ searchParams }: HomeProps) {
   <CountriesPage region={region}>
     <RegionsPage />
   </CountriesPage>
+  
 );
 }
 
 export default function Home({ searchParams }: HomeProps) {
   return (
-    <Suspense fallback={<p>Loading countries...</p>}>
+   <Suspense fallback={<Loading />}>
       <CountryContent searchParams={searchParams} />
     </Suspense>
   );

@@ -1,0 +1,48 @@
+.avoraLoading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: radial-gradient(circle, #eff6ff, #ffffff 70%);
+}
+
+.avoraGlobe {
+  width: 100px;
+  height: 100px;
+  color: #4f9b78;;
+  animation: globeFloat 3s ease-in-out infinite;
+}
+
+.avoraOrbit {
+  transform-origin: 50% 50%;
+  animation: orbitSpin 3s linear infinite;
+}
+
+.avoraLogo {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: #4f9b78;;
+}
+
+.avoraTagline {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.avoraDots {
+  font-size: 24px;
+  letter-spacing: 6px;
+  color: #4f9b78;;
+}
+
+@keyframes globeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}

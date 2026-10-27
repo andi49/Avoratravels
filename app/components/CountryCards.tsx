@@ -3,12 +3,33 @@
 import { useState } from "react"
 import { Country } from "../types/country"
 import Link from "next/link"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
+
 type CountryCardsProps = {
     contries: Country[]
 }
 
 export default function CountryCards({contries}: CountryCardsProps) {
-    const [currentPage, setCurrentPage] = useState(1)
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const pageFromUrl = Number(searchParams.get("page") ?? 1);
+
+
+    const [currentPage, setCurrentPage] = useState(pageFromUrl)
+
+    function handlePageChange(page: number) {
+  setCurrentPage(page);
+
+  const params = new URLSearchParams(searchParams.toString());
+
+  params.set("page", String(page));
+
+  router.push(`${pathname}?${params.toString()}`, {
+    scroll: false,
+  });
+}
 
     const countriesPerPage = 10
 
@@ -22,8 +43,7 @@ export default function CountryCards({contries}: CountryCardsProps) {
     <>
       <div className="countryGrid">
         {visibleCountries.map((country) => (
-          <Link href={`/destinations/${country.uuid}`} key={country.uuid} className="countryCard">
-
+<Link  href={`/destinations/${country.uuid}?${searchParams.toString()}`}key={country.uuid}  className="countryCard">
             <div className="countryFlag">
               {country.flag.url_png && (
                 <img src={country.flag.url_png} alt={`Flagga av ${country.names.common}`}/>
@@ -59,7 +79,7 @@ export default function CountryCards({contries}: CountryCardsProps) {
               key={index}
               type="button"
               className={currentPage === index + 1 ? "activePage" : ""}
-              onClick={() => setCurrentPage(index + 1)}
+              onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}
             </button>

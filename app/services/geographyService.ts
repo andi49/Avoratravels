@@ -18,6 +18,8 @@ export async function getGeography() {
           headers: {
             Authorization: `Bearer ${apiKey}`,
           },
+           next: { revalidate: 86400 
+           },
           signal: AbortSignal.timeout(10000),
         }
       );

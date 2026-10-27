@@ -4,19 +4,41 @@ import { notFound } from "next/navigation";
 import { getCapitalCoordinates, getCurrentWeather } from "@/app/services/weatherService";
 import { getWeatherDescription } from "@/app/services/weatherService";
 import { getWikisum } from "@/app/services/wikipediaService";
+import RetryButton from "@/app/components/RetryButton";
+import Link from "next/link";
 
 type DestinationProps = {
   params: Promise<{
     countryId: string;
-    
+  }>;
+  searchParams: Promise<{
+    search?: string;
+    region?: string;
+    page?: string;
   }>;
 };
 
 export default async function DestinationDetails({
   params,
+  searchParams
 }: DestinationProps) {
+  
 const countries = await getGeography()
 const { countryId } = await params;
+
+const {search, region, page} = await searchParams
+
+const query = new URLSearchParams()
+
+if (search) query.set("search", search);
+if (region) query.set("region", region);
+if (page) query.set("page", page);
+
+const backUrl = query.toString()
+  ? `/?${query.toString()}`
+  : "/";
+
+
     const selectedCountry = countries.find((country) => country.uuid  === countryId)
     console.log(selectedCountry);
 
@@ -26,7 +48,7 @@ if (!selectedCountry) {
   notFound();
 }
 
-const wiki = await getWikisum(selectedCountry.names.common)
+const wiki = await getWikisum(selectedCountry.names.common).catch(() => null)
 
 if(wiki){
   console.log('Wikipedia:', wiki)
@@ -37,7 +59,7 @@ const capital = selectedCountry.capitals?.[0]?.name;
 
 
 if (capital) {
-  const capitalCoordinates = await getCapitalCoordinates(capital);
+  const capitalCoordinates = await getCapitalCoordinates(capital).catch(() => null)
 
   
   if (capitalCoordinates) {
@@ -49,12 +71,16 @@ if (capital) {
 const weather = await getCurrentWeather(
   coordinates.lat,
   coordinates.lng
-);
+).catch(() => null)
 
   return (
     <>
+   <main className="destinationPage">
+    <Link href={backUrl} className="backLink">
+     ← Utforska fler länder
+    </Link>
             <ul className="countryFacts">
-
+                
               <li className="countryFact">
                <img src={selectedCountry.flag.url_png} alt={`${selectedCountry.names.common}s flagga`} />
               </li>
@@ -67,17 +93,23 @@ const weather = await getCurrentWeather(
                 />
               </li>
             )}
+               
 
-                <li className="countryFact">
-               <p>{wiki.extract}</p>
-              </li>
-
-                  <li className="countryFact">
+                 <li className="countryFact">
                   <strong>Temperatur:</strong>
-                 {weather? `${weather.current.temperature_2m} °C`: "Väderinformation saknas"}
-                 <br />
-                {weather? getWeatherDescription(weather.current.weather_code): "Väderinformation saknas"}
-                  </li>
+
+                  {weather ? (
+                    <>
+                      <p>{weather.current.temperature_2m} °C</p>
+                      <p>{getWeatherDescription(weather.current.weather_code)}</p>
+                    </>
+                  ) : (
+                    <p role="alert">
+                      Kunde inte hämta väderinformationen just nu.
+                    </p>
+                  )}
+                
+                </li>
 
                   <li className="countryFact">
                   <strong>Vindhastighet:</strong>
@@ -127,16 +159,29 @@ const weather = await getCurrentWeather(
              {Object.values(selectedCountry.names.native)[0]?.common}
                 </li>
 
-                 <li className="countryFact">
-                <strong>Källa:</strong>
-                  <a href={wiki.content_urls.desktop.page}>Läs mer på wikipedia</a>
+                 {wiki?.content_urls?.desktop?.page && (
+                <li className="countryFact">
+                  <strong>Källa:</strong>
+                  <a href={wiki.content_urls.desktop.page}>
+                    Läs mer på Wikipedia
+                  </a>
                 </li>
+              )}
 
-                 <li className="countryFact">
-                <strong>Om landet</strong>
-                      <p>{wiki.extract}</p>
-                </li>
+              <li className="countryFact">
+            <strong>Om landet:</strong>
+
+            {wiki ? (
+              <p>{wiki.extract}</p>
+            ) : (
+              <p role="alert">
+                Kunde inte hämta information från Wikipedia just nu.
+              </p>
+            )}
+          </li>
             </ul>
+            <RetryButton />
+            </main>
 </>
   );
 }

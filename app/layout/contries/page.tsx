@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+
 import { getGeography } from "@/app/services/geographyService";
 import type { Country } from "@/app/types/country";
 import CrountryBrowser from "@/app/components/CountryBrowser";
@@ -31,10 +31,8 @@ export default function CountriesPage({
   children,
 }: CountryProps) {
   return (
-    <Suspense fallback={<p>Loading countries...</p>}>
-      <CountryList region={region}>
-        {children}
-      </CountryList>
-    </Suspense>
+    <CountryList region={region}>
+      {children}
+    </CountryList>
   );
 }
