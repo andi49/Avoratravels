@@ -40,9 +40,7 @@ export default function CrountryBrowser({
 
         const query = params.toString()
 
-         router.replace(query ? `${pathname}?${query}` : pathname, {
-    scroll: false,
-  });
+         router.replace(query ? `${pathname}?${query}` : pathname, {scroll: false, });
     }
 
     const filteredCountries = countries.filter((country) => 
@@ -51,17 +49,11 @@ export default function CrountryBrowser({
 
     return (
         <>
-       <Search 
-       searchTerm={search} 
-       onSearchChange={handleSearchChange}/>
-          {children}
+       <Search searchTerm={search} onSearchChange={handleSearchChange}/>  {children}
       
        <main>
-        <h1>Countries</h1>
-
-        <CountryCards
-          key={`${region ?? "all"}-${search}`}
-          contries={filteredCountries}
+        <h1 className="regionTitle">Countries</h1>
+        <CountryCards key={`${region ?? "all"}-${search}`}contries={filteredCountries}
         />
        </main>
 

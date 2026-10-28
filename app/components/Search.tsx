@@ -40,7 +40,6 @@ export default function Search({
             →
           </span>
         </div>
-        <p>Du söker efter: {searchTerm}</p> 
       </div>
     </section>
   );

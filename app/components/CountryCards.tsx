@@ -26,9 +26,7 @@ export default function CountryCards({contries}: CountryCardsProps) {
 
   params.set("page", String(page));
 
-  router.push(`${pathname}?${params.toString()}`, {
-    scroll: false,
-  });
+  router.push(`${pathname}?${params.toString()}`, {scroll: false});
 }
 
     const countriesPerPage = 10
@@ -42,11 +40,12 @@ export default function CountryCards({contries}: CountryCardsProps) {
      return (
     <>
     {contries.length === 0 && (
-  <p role="status">Inga länder matchar dina kriterier</p>
+  <p className="noResults" role="status">Inga länder matchar dina kriterier</p>
 )}
       <div className="countryGrid">
         {visibleCountries.map((country) => (
         <Link  href={`/country/${country.codes.alpha_3.trim()}?${searchParams.toString()}`}key={country.uuid}  className="countryCard">
+            
             <div className="countryFlag">
               {country.flag.url_png && (
                 <img src={country.flag.url_png} alt={`Flagga av ${country.names.common}`}/>
