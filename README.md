@@ -1,11 +1,3 @@
-<div align="center">
-
-🌍 Avora
-Upptäck världen, ett land i taget.
-En modern och responsiv resewebbplats där du enkelt kan utforska världens länder, hitta information om olika destinationer och upptäcka aktuellt väder.
-
-🌐 Besök Avora · 💻 GitHub-repository
-</div>
 
 ✨ Funktioner
 - 🔎 Sök efter länder – hitta länder snabbt genom att skriva deras namn.
