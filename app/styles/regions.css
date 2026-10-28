@@ -22,3 +22,8 @@
   font-weight: 600;
   color: #1e293b;
 }
+
+.regionCard.active {
+  border: 2px solid currentColor;
+  font-weight: 700;
+}

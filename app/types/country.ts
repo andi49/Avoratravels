@@ -23,13 +23,13 @@ names: {
   lng: number;
 };
 
-  capitals: {
-    name: string;
-    coordinates?: {
-      latitude: number;
-      longitude: number;
-    };
-  }[];
+ capitals: {
+  name: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
+}[];
 
 flag: {
   colors: Record<string, unknown>;

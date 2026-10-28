@@ -27,6 +27,7 @@ export default function Search({
           </span>
 
           <input
+           id="country-search"
             type="search"
             className="search-input"
             placeholder="Sök land eller destination..."

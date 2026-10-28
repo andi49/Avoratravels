@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import { useState } from "react"
+
 import { Country } from "../types/country"
 import Link from "next/link"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
@@ -17,10 +17,10 @@ export default function CountryCards({contries}: CountryCardsProps) {
   const pageFromUrl = Number(searchParams.get("page") ?? 1);
 
 
-    const [currentPage, setCurrentPage] = useState(pageFromUrl)
+ const currentPage = pageFromUrl;
 
     function handlePageChange(page: number) {
-  setCurrentPage(page);
+  
 
   const params = new URLSearchParams(searchParams.toString());
 
@@ -41,9 +41,12 @@ export default function CountryCards({contries}: CountryCardsProps) {
 
      return (
     <>
+    {contries.length === 0 && (
+  <p role="status">Inga länder matchar dina kriterier</p>
+)}
       <div className="countryGrid">
         {visibleCountries.map((country) => (
-<Link  href={`/destinations/${country.uuid}?${searchParams.toString()}`}key={country.uuid}  className="countryCard">
+        <Link  href={`/country/${country.codes.alpha_3.trim()}?${searchParams.toString()}`}key={country.uuid}  className="countryCard">
             <div className="countryFlag">
               {country.flag.url_png && (
                 <img src={country.flag.url_png} alt={`Flagga av ${country.names.common}`}/>
@@ -63,8 +66,7 @@ export default function CountryCards({contries}: CountryCardsProps) {
               <p>
                 <span>📍 Capital</span>
                 <strong>
-                  {country.capitals.map((capital) => capital.name).join(", ") ||
-                    "N/A"}
+                  {country.capitals?.map((capital) => capital.name).join(", ") || "N/A"}
                 </strong>
               </p>
             </div>
@@ -73,19 +75,28 @@ export default function CountryCards({contries}: CountryCardsProps) {
       </div>
 
       {totalPages > 1 && (
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index}
-              type="button"
-              className={currentPage === index + 1 ? "activePage" : ""}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      )}
+  <nav className="pagination" aria-label="Sidnavigering">
+    <button
+      type="button"
+      onClick={() => handlePageChange(currentPage - 1)}
+      disabled={currentPage === 1}
+    >
+      Föregående
+    </button>
+
+    <span aria-live="polite">
+      Sida {currentPage} av {totalPages}
+    </span>
+
+    <button
+      type="button"
+      onClick={() => handlePageChange(currentPage + 1)}
+      disabled={currentPage === totalPages}
+    >
+      Nästa
+    </button>
+  </nav>
+)}
     </>
   );
 }

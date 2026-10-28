@@ -1,5 +1,5 @@
 import { Country } from "../types/country";
-
+import type { GeographyResponse } from "../types/geographyResponse";
 export async function getGeography() {
   const apiKey = process.env.REST_COUNTRIES_API_KEY;
 
@@ -12,6 +12,7 @@ export async function getGeography() {
 
     for (let offset = 0; ; offset += 100) {
       console.log("Hämtar länder, offset:", offset);
+      
       const response = await fetch(
         `https://api.restcountries.com/countries/v5?limit=100&offset=${offset}`,
         {
@@ -24,13 +25,23 @@ export async function getGeography() {
         }
       );
 console.log("API svarade, offset:", offset, response.status);
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch geography: ${response.status}`
-        );
-      }
 
-      const result = await response.json();
+      if (!response.ok) {
+  if (response.status === 401) {
+    throw new Error("Ogiltig API-nyckel. Kontrollera din API-nyckel.");
+  }
+
+  if (response.status === 403) {
+    throw new Error("Åtkomst nekad. Kontrollera API-nyckeln och behörigheterna.");
+  }
+
+  if (response.status === 429) {
+    throw new Error("För många API-anrop. Försök igen om en stund.");
+  }
+
+  throw new Error(`Kunde inte hämta länder. Felkod: ${response.status}`);
+}
+      const result: GeographyResponse = await response.json()
 
       if (!Array.isArray(result.data.objects)) {
         throw new Error("Invalid API response");

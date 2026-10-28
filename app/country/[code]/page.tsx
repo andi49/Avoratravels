@@ -9,7 +9,7 @@ import Link from "next/link";
 
 type DestinationProps = {
   params: Promise<{
-    countryId: string;
+     code: string;
   }>;
   searchParams: Promise<{
     search?: string;
@@ -24,7 +24,7 @@ export default async function DestinationDetails({
 }: DestinationProps) {
   
 const countries = await getGeography()
-const { countryId } = await params;
+const { code } = await params;
 
 const {search, region, page} = await searchParams
 
@@ -39,8 +39,8 @@ const backUrl = query.toString()
   : "/";
 
 
-    const selectedCountry = countries.find((country) => country.uuid  === countryId)
-    console.log(selectedCountry);
+    const selectedCountry = countries.find((country) => country.codes.alpha_3  === code.trim().toUpperCase())
+   
 
 
 
@@ -48,30 +48,27 @@ if (!selectedCountry) {
   notFound();
 }
 
-const wiki = await getWikisum(selectedCountry.names.common).catch(() => null)
+const wikiPromise = getWikisum(selectedCountry.names.common).catch(() => null);
 
-if(wiki){
-  console.log('Wikipedia:', wiki)
-}
 
-let coordinates = selectedCountry.coordinates;
 const capital = selectedCountry.capitals?.[0]?.name;
 
+const capitalCoordinates = capital
+  ? await getCapitalCoordinates(capital).catch(() => null) : null;
 
-if (capital) {
-  const capitalCoordinates = await getCapitalCoordinates(capital).catch(() => null)
-
-  
-  if (capitalCoordinates) {
-    coordinates = capitalCoordinates;
-  }
-}
+const coordinates = capitalCoordinates ?? selectedCountry.coordinates
 
 
-const weather = await getCurrentWeather(
+
+const weatherPromise = getCurrentWeather(
   coordinates.lat,
   coordinates.lng
-).catch(() => null)
+).catch(() => null);
+
+const [wiki, weather] = await Promise.all([
+  wikiPromise,
+  weatherPromise,
+]);
 
   return (
     <>
@@ -81,9 +78,14 @@ const weather = await getCurrentWeather(
     </Link>
             <ul className="countryFacts">
                 
+              {selectedCountry.flag?.url_png && (
               <li className="countryFact">
-               <img src={selectedCountry.flag.url_png} alt={`${selectedCountry.names.common}s flagga`} />
+                <img
+                  src={selectedCountry.flag.url_png}
+                  alt={`${selectedCountry.names.common}s flagga`}
+                />
               </li>
+            )}
 
                {wiki?.thumbnail && (
               <li className="countryFact">
