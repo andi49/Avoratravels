@@ -19,21 +19,6 @@ img {
   width: min(1200px, calc(100% - 32px));
 }
 
-.regionGrid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: clamp(12px, 2vw, 20px);
-  width: min(1200px, calc(100% - 32px));
-}
-
-.regionCard {
-  display: flex;
-  min-width: 0;
-  min-height: 64px;
-  align-items: center;
-  justify-content: center;
-  overflow-wrap: anywhere;
-}
-
 .countryGrid {
   grid-template-columns: minmax(0, 1fr);
   width: min(100%, 1200px);
@@ -111,6 +96,18 @@ img {
     font-size: clamp(1.8rem, 8vw, 2.5rem);
   }
 
+  .regionGrid {
+    gap: 12px;
+    margin: 20px auto 32px;
+  }
+
+  .regionCard {
+    min-height: 56px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 15px;
+  }
+
   .countryGrid {
     gap: 16px;
     margin: 24px auto;
@@ -134,24 +131,6 @@ img {
 
   .countryDetails p {
     padding: 12px 14px;
-  }
-
-  .countryFacts {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-    margin: 32px auto;
-    padding: 0 16px;
-  }
-
-  .countryFact,
-  .countryFact:first-child {
-    padding: 20px;
-    font-size: 1rem;
-  }
-
-  .countryFact:first-child {
-    grid-column: auto;
-    font-size: 1.4rem;
   }
 
   .destinationPage {
@@ -180,7 +159,6 @@ img {
 
 @media (hover: none) {
   .countryCard:hover,
-  .countryFact:hover,
   .pagination button:hover {
     transform: none;
   }

@@ -72,7 +72,7 @@ const [wiki, weather] = await Promise.all([
             <ul className="countryFacts">
                 
               {selectedCountry.flag?.url_png && (
-              <li className="countryFact">
+              <li className="countryFact countryFactImage">
                 <img
                   src={selectedCountry.flag.url_png}
                   alt={`${selectedCountry.names.common}s flagga`}
@@ -81,7 +81,7 @@ const [wiki, weather] = await Promise.all([
             )}
 
                {wiki?.thumbnail && (
-              <li className="countryFact">
+              <li className="countryFact countryFactImage">
                 <img
                   src={wiki.thumbnail.source}
                   alt={wiki.description || `Bild från Wikipedia om ${selectedCountry.names.common}`}
