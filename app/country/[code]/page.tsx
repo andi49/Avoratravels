@@ -34,16 +34,10 @@ if (search) query.set("search", search);
 if (region) query.set("region", region);
 if (page) query.set("page", page);
 
-const backUrl = query.toString()
-  ? `/?${query.toString()}`
-  : "/";
+const backUrl = query.toString() ? `/?${query.toString()}`: "/"
 
-
-    const selectedCountry = countries.find((country) => country.codes.alpha_3  === code.trim().toUpperCase())
+const selectedCountry = countries.find((country) => country.codes.alpha_3  === code.trim().toUpperCase())
    
-
-
-
 if (!selectedCountry) {
   notFound();
 }
@@ -53,8 +47,7 @@ const wikiPromise = getWikisum(selectedCountry.names.common).catch(() => null);
 
 const capital = selectedCountry.capitals?.[0]?.name;
 
-const capitalCoordinates = capital
-  ? await getCapitalCoordinates(capital).catch(() => null) : null;
+const capitalCoordinates = capital ? await getCapitalCoordinates(capital).catch(() => null) : null;
 
 const coordinates = capitalCoordinates ?? selectedCountry.coordinates
 
