@@ -67,7 +67,7 @@ const [wiki, weather] = await Promise.all([
     <>
    <main className="destinationPage">
     <Link href={backUrl} className="backLink">
-     ← Utforska fler länder
+     ← Tillbaka
     </Link>
             <ul className="countryFacts">
                 
