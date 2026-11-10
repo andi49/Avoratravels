@@ -8,8 +8,6 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-   console.log("AVORA ERROR-KOMPONENTEN KÖRS");
-
   return (
     <ErrorMessage
       message="Kunde inte hämta landinformationen."
